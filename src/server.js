@@ -45,16 +45,22 @@ app.get("/notes", (req,res) => {
   );
 });
 
-
-app.get("/notes/:noteId", (req, res) => {
-  console.log("Notes id page");
-  res.status(200).json({
-    "message": "Retrieved note with ID: id_param"
-  }
-  );
+app.get('/notes/:noteId', (req, res) => {
+  const { noteId } = req.params;
+  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
 });
 
 
+
+
+
+app.get('/test-error', () => {
+  throw new Error('Simulated server error');
+});
+
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
 
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);
@@ -65,15 +71,6 @@ const isProd = process.env.NODE_ENV === 'production';
 
 
   });
-});
-
-
-app.get('/test-error', () => {
-  throw new Error('Simulated server error');
-});
-
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
 });
 
 const PORT = process.env.PORT || 3000;
