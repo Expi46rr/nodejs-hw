@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { TAGS } from "../constants/tags";
 
 const notesSchema = new Schema({
   title: {
@@ -14,18 +15,7 @@ const notesSchema = new Schema({
   tag: {
     type: String,
     default: "Todo",
-    enum: [
-    "Work",
-    "Personal",
-    "Meeting",
-    "Shopping",
-    "Ideas",
-    "Travel",
-    "Finance",
-    "Health",
-    "Important",
-    "Todo",
-  ],
+    enum: TAGS,
   }
 }, {
   timestamps: true,

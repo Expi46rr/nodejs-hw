@@ -3,7 +3,7 @@ import { Router } from "express";
 import { createNote, deleteNote, getNoteById, getAllNotes, updateNote } from "../controllers/notesController.js";
 import { celebrate, } from "celebrate";
 import { createNoteSchema, getAllNotesSchema, noteIdSchema, updateNoteSchema } from "../validations/notesValidation.js";
-import {  } from "../validations/notesValidation.js";
+
 
 const router = Router();
 router.get("/notes",celebrate(getAllNotesSchema), getAllNotes);
