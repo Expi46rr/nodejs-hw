@@ -1,6 +1,6 @@
 import { Joi, Segments } from "celebrate";
 import { isValidObjectId } from "mongoose";
-import { TAGS } from "../constants/tags";
+import { TAGS } from "../constants/tags.js";
 
 export const createNoteSchema = {
    [Segments.BODY]:Joi.object({
@@ -36,7 +36,7 @@ export const updateNoteSchema = {
   [Segments.BODY]: Joi.object({
     title: Joi.string().min(1),
     content: Joi.string().allow(""),
-    tag: Joi.string().valid(TAGS),
+    tag: Joi.string().valid(...TAGS),
   }).min(1),
   [Segments.PARAMS]:Joi.object({
      noteId: Joi.string().custom(objIdValidator).required()
