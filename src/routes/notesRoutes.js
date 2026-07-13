@@ -2,7 +2,7 @@ import { Router } from "express";
 // import { Note } from "../models/note.js";
 import { createNote, deleteNote, getNoteById, getAllNotes, updateNote } from "../controllers/notesController.js";
 import { celebrate, } from "celebrate";
-import {  } from "../validator/notesValidator.js";
+import {  } from "../validations/notesValidator.js";
 import { createNoteSchema, getAllNotesSchema, noteIdSchema, updateNoteSchema } from "../validations/notesValidator.js";
 
 const router = Router();
