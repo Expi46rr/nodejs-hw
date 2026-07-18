@@ -11,7 +11,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { logger } from "./middleware/logger.js";
 import notesRoutes from "./routes/notesRoutes.js";
 import { errors } from "celebrate";
-
+import authRoutes from "./routes/authRoutes.js";
 
 dns.setServers(["8.8.8.8"]);
 
@@ -23,6 +23,7 @@ app.use(helmet());
 const PORT = process.env.PORT || 3000;
 
 app.use(notesRoutes);
+app.use(authRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
