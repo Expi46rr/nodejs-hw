@@ -1,4 +1,4 @@
-import { Session } from '../models/session';
+import { Session } from '../models/session.js';
 
 export const createSession = async (userId) => {
   return await Session.create({
