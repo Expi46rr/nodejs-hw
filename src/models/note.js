@@ -21,6 +21,7 @@ const notesSchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
       required: true,
+      ref: 'User',
     },
   },
   {
@@ -30,5 +31,6 @@ const notesSchema = new Schema(
 
 notesSchema.index({
   tag: 1,
+  userId: 1,
 });
 export const Note = model('Note', notesSchema);
