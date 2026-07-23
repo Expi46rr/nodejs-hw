@@ -12,11 +12,13 @@ import { logger } from "./middleware/logger.js";
 import notesRoutes from "./routes/notesRoutes.js";
 import { errors } from "celebrate";
 import authRoutes from "./routes/authRoutes.js";
+import cookieParser from "cookie-parser";
 
 dns.setServers(["8.8.8.8"]);
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 app.use(logger);
 app.use(helmet());
