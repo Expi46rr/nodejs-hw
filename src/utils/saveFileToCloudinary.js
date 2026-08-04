@@ -15,7 +15,7 @@ export const saveFileToCloudinary = async (buffer, userId) => {
     overwrite: true,
     unique_filename: false,
     transformation: [
-      { width: 500, heigh: 500, crop: 'fill', gravity: 'auto' },
+      { width: 500, height: 500, crop: 'fill', gravity: 'auto' },
       { fetch_format: 'auto', quality: 'auto' },
     ],
   };
