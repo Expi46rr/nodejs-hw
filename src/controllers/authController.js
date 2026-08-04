@@ -5,6 +5,9 @@ import { createSession, setSessionCookies } from '../services/auth.js';
 import { Session } from '../models/session.js';
 import { sendEmail } from '../utils/sendMail.js';
 import jwt from 'jsonwebtoken';
+import handlebars from 'handlebars';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 export const registerUser = async (req, res) => {
   const createdUser = await User.findOne({ email: req.body.email });
@@ -89,28 +92,58 @@ export const refreshUserSession = async (req, res) => {
 
 export const requestResetEmail = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
+
+  // Чтобы нельзя было узнать существует ли пользователь
   if (!user) {
-    return res.status(200).json({ message: 'Success' });
+    return res.status(200).json({
+      message: 'Reset password email has been successfully sent.',
+    });
   }
-  const token = jwt.sign(
-    { email: req.body.email, sub: user._id },
+
+  const resetToken = jwt.sign(
+    {
+      email: user.email,
+      sub: user._id,
+    },
     process.env.JWT_SECRET,
-    { expiresIn: '15m' },
+    {
+      expiresIn: '15m',
+    },
   );
 
-  const frontEnd = `my-app.com/reset-pwd?token=${token}`;
+  const resetPasswordLink = `${process.env.FRONTEND_DOMAIN}/reset-password?token=${resetToken}`;
+
+  // Загружаем html шаблон
+  const templatePath = path.join(
+    process.cwd(),
+    'src',
+    'templates',
+    'reset-password-email.html',
+  );
+
+  const templateSource = await fs.readFile(templatePath, 'utf-8');
+
+  const template = handlebars.compile(templateSource);
+
+  const html = template({
+    name: user.name || user.email,
+    link: resetPasswordLink,
+  });
+
   try {
     await sendEmail({
       from: process.env.SMTP_FROM,
-      to: req.body.email,
+      to: user.email,
       subject: 'Reset your password',
-      html: '<p>RESET PASSWORD EMAIL BODY</p>',
+      html,
     });
   } catch {
-    throw createHttpError(500, 'Something want wrong');
+    throw createHttpError(500, 'Something went wrong');
   }
 
-  res.status(200).json({});
+  res.status(200).json({
+    message: 'Reset password email has been successfully sent.',
+  });
 };
 export const resetPassword = async (req, res) => {
   const { password, token } = req.body;

@@ -7,7 +7,7 @@ cloudinary.config({
   secure: true,
 });
 
-export const saveToCloudinary = async (buffer, userId) => {
+export const saveFileToCloudinary = async (buffer, userId) => {
   const options = {
     folder: 'students-app/avatars',
     resource_type: 'image',
